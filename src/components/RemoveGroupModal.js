@@ -23,7 +23,7 @@ export default function RemoveGroupModal({ onClose, onRemove, numGroups }) {
                         </div>
                         <h2 className="text-2xl font-bold text-gray-800">Remove Group</h2>
                     </div>
-                    <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition">
+                    <button onClick={onClose} className="text-gray-400 cursor-pointer hover:text-gray-600 transition">
                         <X className="w-6 h-6" />
                     </button>
                 </div>
@@ -47,7 +47,7 @@ export default function RemoveGroupModal({ onClose, onRemove, numGroups }) {
                         <select
                             value={selectedGroup}
                             onChange={(e) => setSelectedGroup(e.target.value)}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                            className="w-full text-gray-500 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         >
                             <option value="">-- Select a group --</option>
                             {Array.from({ length: numGroups }, (_, i) => (
@@ -72,13 +72,13 @@ export default function RemoveGroupModal({ onClose, onRemove, numGroups }) {
                 <div className="flex gap-3 p-6 border-t border-gray-200">
                     <button
                         onClick={onClose}
-                        className="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
+                        className="flex-1 cursor-pointer px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleRemove}
-                        className="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition font-medium flex items-center justify-center gap-2"
+                        className="flex-1 px-4 py-3 cursor-pointer bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition font-medium flex items-center justify-center gap-2"
                     >
                         <Trash2 className="w-5 h-5" />
                         Remove

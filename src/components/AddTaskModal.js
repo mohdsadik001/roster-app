@@ -60,7 +60,7 @@ export default function AddTaskModal({ onClose, onAdd }) {
                             required
                             value={taskData.name}
                             onChange={(e) => setTaskData({ ...taskData, name: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                            className="w-full text-gray-500 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                             placeholder="e.g., Task11"
                         />
                     </div>
@@ -77,7 +77,7 @@ export default function AddTaskModal({ onClose, onAdd }) {
                                 max="31"
                                 value={taskData.start_col}
                                 onChange={(e) => setTaskData({ ...taskData, start_col: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className="w-full text-gray-500 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                 placeholder="2-31"
                             />
                         </div>
@@ -92,7 +92,7 @@ export default function AddTaskModal({ onClose, onAdd }) {
                                 max="31"
                                 value={taskData.end_col}
                                 onChange={(e) => setTaskData({ ...taskData, end_col: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className="w-full text-gray-500 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                 placeholder="2-31"
                             />
                         </div>
@@ -108,7 +108,7 @@ export default function AddTaskModal({ onClose, onAdd }) {
                                 required
                                 value={taskData.start_date}
                                 onChange={(e) => setTaskData({ ...taskData, start_date: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className="w-full text-gray-500 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                 placeholder="DD-MM-YY"
                             />
                         </div>
@@ -121,7 +121,7 @@ export default function AddTaskModal({ onClose, onAdd }) {
                                 required
                                 value={taskData.end_date}
                                 onChange={(e) => setTaskData({ ...taskData, end_date: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className="w-full px-4 py-3 text-gray-500 text-gray-500 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                 placeholder="DD-MM-YY"
                             />
                         </div>

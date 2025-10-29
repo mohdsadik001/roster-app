@@ -11,15 +11,14 @@ import AddTaskModal from '@/components/AddTaskModal';
 import RemoveGroupModal from '@/components/RemoveGroupModal';
 import RemoveTaskModal from '@/components/RemoveTaskModal';
 import SettingsModal from '@/components/SettingsModal';
+import DataManagementModal from '@/components/DataManagementModal';
 import { 
     initializeSampleData, 
     autoAssignGroupPatterns, 
-    calculateWeekoffStats,
-    isValidSubmissionDay,
-    findNextValidSubmissionDay
+    calculateWeekoffStats 
 } from '@/lib/taskScheduler';
-
-import { Calendar as CalendarIcon, ListTodo, Users, Settings } from 'lucide-react';
+import { StorageManager } from '@/lib/storage';
+import { Calendar as CalendarIcon, ListTodo, Users, Settings, Database, Save } from 'lucide-react';
 
 export default function Home() {
     const [calendar, setCalendar] = useState([]);
@@ -28,6 +27,8 @@ export default function Home() {
     const [amountPerDay, setAmountPerDay] = useState(1000);
     const [totalCalendarDays] = useState(30);
     const [activeTab, setActiveTab] = useState('calendar');
+    const [dataLoaded, setDataLoaded] = useState(false);
+    const [lastSaved, setLastSaved] = useState(null);
     
     // Modal states
     const [showAddGroup, setShowAddGroup] = useState(false);
@@ -35,22 +36,60 @@ export default function Home() {
     const [showRemoveGroup, setShowRemoveGroup] = useState(false);
     const [showRemoveTask, setShowRemoveTask] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
+    const [showDataManagement, setShowDataManagement] = useState(false);
 
+    // Load data from localStorage on mount
     useEffect(() => {
-        const { calendar: initialCalendar, tasks: initialTasks } = initializeSampleData();
-        const updatedCalendar = autoAssignGroupPatterns(initialCalendar, numGroups, totalCalendarDays);
+        const savedSettings = StorageManager.loadSettings();
+        const savedCalendar = StorageManager.loadCalendar();
+        const savedTasks = StorageManager.loadTasks();
+
+        if (savedSettings && savedCalendar && savedTasks) {
+            // Load from localStorage
+            setNumGroups(savedSettings.numGroups);
+            setAmountPerDay(savedSettings.amountPerDay);
+            setCalendar(savedCalendar);
+            setTasks(savedTasks);
+            console.log('✅ Data loaded from localStorage');
+        } else {
+            // Initialize with sample data
+            const { calendar: initialCalendar, tasks: initialTasks } = initializeSampleData();
+            const updatedCalendar = autoAssignGroupPatterns(initialCalendar, numGroups, totalCalendarDays);
+            
+            const updatedTasks = initialTasks.map(task => 
+                calculateWeekoffStats(task, updatedCalendar, numGroups, totalCalendarDays)
+            );
+            
+            updatedTasks.forEach(task => {
+                task.nett_amount = task.nett_days * amountPerDay;
+            });
+            
+            setCalendar(updatedCalendar);
+            setTasks(updatedTasks);
+            
+            // Save initial data
+            saveToLocalStorage(updatedCalendar, updatedTasks, numGroups, amountPerDay);
+            console.log('✅ Sample data initialized and saved');
+        }
         
-        const updatedTasks = initialTasks.map(task => 
-            calculateWeekoffStats(task, updatedCalendar, numGroups, totalCalendarDays)
-        );
-        
-        updatedTasks.forEach(task => {
-            task.nett_amount = task.nett_days * amountPerDay;
-        });
-        
-        setCalendar(updatedCalendar);
-        setTasks(updatedTasks);
+        setDataLoaded(true);
     }, []);
+
+    // Auto-save function
+    const saveToLocalStorage = (cal, tsk, grps, amt) => {
+        StorageManager.saveCalendar(cal);
+        StorageManager.saveTasks(tsk);
+        StorageManager.saveSettings(grps, amt);
+        setLastSaved(new Date());
+        console.log('💾 Data auto-saved');
+    };
+
+    // Auto-save whenever data changes
+    useEffect(() => {
+        if (dataLoaded && calendar.length > 0 && tasks.length > 0) {
+            saveToLocalStorage(calendar, tasks, numGroups, amountPerDay);
+        }
+    }, [calendar, tasks, numGroups, amountPerDay, dataLoaded]);
 
     const recalculateAll = (newCalendar = calendar, newTasks = tasks, newNumGroups = numGroups, newAmount = amountPerDay) => {
         const updatedCalendar = autoAssignGroupPatterns([...newCalendar], newNumGroups, totalCalendarDays);
@@ -109,7 +148,25 @@ export default function Home() {
         setShowSettings(false);
     };
 
+    const handleResetData = () => {
+        if (confirm('Are you sure you want to reset all data to default? This cannot be undone.')) {
+            StorageManager.clearAll();
+            window.location.reload();
+        }
+    };
+
     const totalAmount = tasks.reduce((sum, task) => sum + task.nett_amount, 0);
+
+    if (!dataLoaded) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading data...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -123,12 +180,18 @@ export default function Home() {
                             </h1>
                             <p className="text-sm text-gray-600 mt-1">
                                 November 2025 - Task & Workforce Management
+                                {lastSaved && (
+                                    <span className="ml-2 text-green-600">
+                                        <Save className="w-3 h-3 inline mr-1" />
+                                        Auto-saved at {lastSaved.toLocaleTimeString()}
+                                    </span>
+                                )}
                             </p>
                         </div>
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setShowAddGroup(true)}
-                                className="px-4 cursor-pointer py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                                className="px-4 py-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                             >
                                 + Add Group
                             </button>
@@ -137,6 +200,12 @@ export default function Home() {
                                 className="px-4 py-2 cursor-pointer bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                             >
                                 + Add Task
+                            </button>
+                            <button
+                                onClick={() => setShowDataManagement(true)}
+                                className="px-4 py-2 cursor-pointer bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+                            >
+                                <Database className="w-5 h-5" />
                             </button>
                             <button
                                 onClick={() => setShowSettings(true)}
@@ -267,6 +336,12 @@ export default function Home() {
                     onClose={() => setShowSettings(false)}
                     onUpdate={handleUpdateSettings}
                     currentAmount={amountPerDay}
+                />
+            )}
+            {showDataManagement && (
+                <DataManagementModal
+                    onClose={() => setShowDataManagement(false)}
+                    onReset={handleResetData}
                 />
             )}
         </div>

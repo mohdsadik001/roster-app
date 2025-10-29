@@ -13,7 +13,7 @@ export default function Calendar({ calendar, numGroups, totalCalendarDays }) {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto no-scrollbar">
       <table className="min-w-full border-collapse">
         <thead>
           <tr className="bg-gradient-to-r from-blue-600 to-purple-600">
