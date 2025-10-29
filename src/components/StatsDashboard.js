@@ -1,4 +1,4 @@
-import { Users, ListTodo, DollarSign, Calendar } from 'lucide-react';
+import { Users, ListTodo, DollarSign, Calendar, IndianRupee } from 'lucide-react';
 
 export default function StatsDashboard({ numGroups, taskCount, amountPerDay, totalAmount }) {
     return (
@@ -12,11 +12,10 @@ export default function StatsDashboard({ numGroups, taskCount, amountPerDay, tot
                             <p className="text-4xl font-bold">{numGroups}</p>
                         </div>
                         <div className="bg-white bg-opacity-20 rounded-full p-3">
-                            <Users className="w-8 h-8" />
+                            <Users className="w-8 h-8 text-blue-400" /> 
                         </div>
                     </div>
                     <div className="mt-4 flex items-center text-sm text-blue-100">
-                        <span className="mr-2">●</span>
                         Active workforce groups
                     </div>
                 </div>
@@ -29,11 +28,11 @@ export default function StatsDashboard({ numGroups, taskCount, amountPerDay, tot
                             <p className="text-4xl font-bold">{taskCount}</p>
                         </div>
                         <div className="bg-white bg-opacity-20 rounded-full p-3">
-                            <ListTodo className="w-8 h-8" />
+                            <ListTodo className="w-8 h-8 text-green-500" />
                         </div>
                     </div>
                     <div className="mt-4 flex items-center text-sm text-green-100">
-                        <span className="mr-2">●</span>
+                    
                         Scheduled tasks
                     </div>
                 </div>
@@ -43,14 +42,14 @@ export default function StatsDashboard({ numGroups, taskCount, amountPerDay, tot
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-purple-100 text-sm font-medium mb-1">Rate/Day</p>
-                            <p className="text-4xl font-bold">${amountPerDay}</p>
+                            <p className="text-4xl font-bold">₹{amountPerDay}</p>
                         </div>
                         <div className="bg-white bg-opacity-20 rounded-full p-3">
-                            <Calendar className="w-8 h-8" />
+                            <Calendar className="w-8 h-8 text-purple-500" />
                         </div>
                     </div>
                     <div className="mt-4 flex items-center text-sm text-purple-100">
-                        <span className="mr-2">●</span>
+
                         Per working day
                     </div>
                 </div>
@@ -60,14 +59,13 @@ export default function StatsDashboard({ numGroups, taskCount, amountPerDay, tot
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-orange-100 text-sm font-medium mb-1">Total Amount</p>
-                            <p className="text-4xl font-bold">${totalAmount.toLocaleString()}</p>
+                            <p className="text-4xl font-bold">₹{totalAmount.toLocaleString()}</p>
                         </div>
                         <div className="bg-white bg-opacity-20 rounded-full p-3">
-                            <DollarSign className="w-8 h-8" />
+                            <IndianRupee className="w-8 h-8 text-orange-500" />
                         </div>
                     </div>
                     <div className="mt-4 flex items-center text-sm text-orange-100">
-                        <span className="mr-2">●</span>
                         Total revenue
                     </div>
                 </div>

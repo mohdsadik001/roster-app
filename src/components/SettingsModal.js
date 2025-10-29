@@ -44,7 +44,7 @@ export default function SettingsModal({ onClose, onUpdate, currentAmount }) {
                                 min="1"
                                 value={newAmount}
                                 onChange={(e) => setNewAmount(e.target.value)}
-                                className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-semibold"
+                                className="w-full text-gray-500 pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-semibold"
                                 placeholder="1000"
                             />
                         </div>
@@ -52,10 +52,10 @@ export default function SettingsModal({ onClose, onUpdate, currentAmount }) {
 
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <p className="text-sm text-blue-900 mb-2">
-                            <strong>Current Rate:</strong> ${currentAmount}/day
+                            <strong>Current Rate:</strong> ₹{currentAmount}/day
                         </p>
                         <p className="text-sm text-blue-900">
-                            <strong>New Rate:</strong> ${newAmount}/day
+                            <strong>New Rate:</strong> ₹{newAmount}/day
                         </p>
                     </div>
 

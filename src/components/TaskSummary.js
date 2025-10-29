@@ -14,7 +14,7 @@ export default function TaskSummary({ tasks, numGroups, amountPerDay, totalAmoun
                 <h2 className="text-2xl font-bold text-gray-800">Task Summary</h2>
                 <button
                     onClick={onRemoveTask}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center gap-2"
+                    className="px-4 py-2 cursor-pointer bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center gap-2"
                 >
                     <Trash2 className="w-4 h-4" />
                     Remove Task
@@ -40,17 +40,17 @@ export default function TaskSummary({ tasks, numGroups, amountPerDay, totalAmoun
                     <tbody>
                         {tasks.map((task, idx) => (
                             <tr key={idx} className="hover:bg-gray-50">
-                                <td className="border border-gray-300 px-4 py-2 font-semibold">{task.name}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{task.start_col}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{task.end_col}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{task.start_date}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{task.end_date}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{task.duration}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{task.weekoff_count}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{task.avg_weekoff}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center font-semibold">{task.nett_days}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center font-bold text-green-600">
-                                    ${task.nett_amount}
+                                <td className="border border-gray-300 px-4 text-black py-2 font-semibold">{task.name}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center">{task.start_col}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center">{task.end_col}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center">{task.start_date}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center">{task.end_date}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center">{task.duration}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center">{task.weekoff_count}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center">{task.avg_weekoff}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center font-semibold">{task.nett_days}</td>
+                                <td className="border border-gray-300 px-4 text-black py-2 text-center font-bold text-green-600">
+                                    ₹{task.nett_amount}
                                 </td>
                             </tr>
                         ))}
@@ -64,7 +64,7 @@ export default function TaskSummary({ tasks, numGroups, amountPerDay, totalAmoun
                             <td className="border border-gray-300 px-4 py-2 text-center">{totals.weekoff}</td>
                             <td className="border border-gray-300 px-4 py-2 text-center">{totals.avgWeekoff}</td>
                             <td className="border border-gray-300 px-4 py-2 text-center">{totals.nettDays}</td>
-                            <td className="border border-gray-300 px-4 py-2 text-center text-green-600">${totalAmount}</td>
+                            <td className="border border-gray-300 px-4 py-2 text-center text-green-600">₹{totalAmount}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -82,11 +82,11 @@ export default function TaskSummary({ tasks, numGroups, amountPerDay, totalAmoun
                 </div>
                 <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
                     <p className="text-sm text-purple-600 font-medium">Amount/Day</p>
-                    <p className="text-2xl font-bold text-purple-900">${amountPerDay}</p>
+                    <p className="text-2xl font-bold text-purple-900">₹{amountPerDay}</p>
                 </div>
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                     <p className="text-sm text-orange-600 font-medium">Total Amount</p>
-                    <p className="text-2xl font-bold text-orange-900">${totalAmount}</p>
+                    <p className="text-2xl font-bold text-orange-900">₹{totalAmount}</p>
                 </div>
             </div>
 

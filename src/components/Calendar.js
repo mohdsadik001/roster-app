@@ -33,13 +33,13 @@ export default function Calendar({ calendar, numGroups, totalCalendarDays }) {
         <tbody>
           {/* Day Row */}
           <tr className="bg-blue-50">
-            <td className="border border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-blue-50 z-10">
+            <td className="border text-blue-500 border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-blue-50 z-10">
               Day
             </td>
             {calendar.slice(0, totalCalendarDays).map((day, idx) => (
               <td
                 key={idx}
-                className="border border-gray-300 px-3 py-2 text-center font-medium"
+                className="border text-black border-gray-300 px-3 py-2 text-center font-medium"
               >
                 {day.day}
               </td>
@@ -47,7 +47,7 @@ export default function Calendar({ calendar, numGroups, totalCalendarDays }) {
           </tr>
           {/* Task Row */}
           <tr className="bg-yellow-50">
-            <td className="border border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-yellow-50 z-10">
+            <td className="border text-blue-500 border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-yellow-50 z-10">
               Task
             </td>
             {calendar.slice(0, totalCalendarDays).map((day, idx) => (
@@ -66,7 +66,7 @@ export default function Calendar({ calendar, numGroups, totalCalendarDays }) {
           {/* Group Rows */}
           {Array.from({ length: numGroups }).map((_, groupIdx) => (
             <tr key={groupIdx} className="hover:bg-gray-50">
-              <td className="border border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-white z-10">
+              <td className="border text-blue-500 border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-white z-10">
                 Group {groupIdx + 1}
               </td>
               {calendar.slice(0, totalCalendarDays).map((day, dayIdx) => (
@@ -88,7 +88,7 @@ export default function Calendar({ calendar, numGroups, totalCalendarDays }) {
         
           {/* Submission Row */}
           <tr className="bg-indigo-50">
-            <td className="border border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-indigo-50 z-10">
+            <td className="border text-blue-500 border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-indigo-50 z-10">
               Submission
             </td>
             {calendar.slice(0, totalCalendarDays).map((day, idx) => {

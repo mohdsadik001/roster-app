@@ -128,19 +128,19 @@ export default function Home() {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setShowAddGroup(true)}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                                className="px-4 cursor-pointer py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                             >
                                 + Add Group
                             </button>
                             <button
                                 onClick={() => setShowAddTask(true)}
-                                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                                className="px-4 py-2 cursor-pointer bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                             >
                                 + Add Task
                             </button>
                             <button
                                 onClick={() => setShowSettings(true)}
-                                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
+                                className="px-4 py-2 cursor-pointer bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
                             >
                                 <Settings className="w-5 h-5" />
                             </button>

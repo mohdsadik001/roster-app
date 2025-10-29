@@ -36,19 +36,14 @@ export function isWeekoff(groupStatus) {
 // Add this function after isWeekoff() and before daysBetween()
 
 export function isValidSubmissionDay(dayEntry, numGroups) {
-    // Check if it's one of the first 2 days (Mandatory)
-    const dayIndex = parseInt(dayEntry.date.split('-')[0]) - 1;
-    if (dayIndex < 2) {
-        return true;
-    }
-    
-    // Check if it's Friday, Saturday, or Sunday (all groups present)
     const day = dayEntry.day;
+    
+    // Saturday, Sunday, and Friday - all groups present (valid submission days)
     if (day === 'Friday' || day === 'Saturday' || day === 'Sunday') {
         return true;
     }
     
-    // Otherwise, check if ALL groups are present (no weekoffs)
+    // Check if ALL groups are present (no weekoffs)
     for (let g = 0; g < numGroups; g++) {
         if (isWeekoff(dayEntry.groups[g])) {
             return false; // At least one group is off
@@ -57,6 +52,7 @@ export function isValidSubmissionDay(dayEntry, numGroups) {
     
     return true;
 }
+
 
 export function findNextValidSubmissionDay(calendar, startIndex, numGroups, totalCalendarDays) {
     for (let i = startIndex; i < totalCalendarDays; i++) {
@@ -105,18 +101,30 @@ export function autoAssignGroupPatterns(calendar, numGroups, totalCalendarDays) 
         const currentDay = calendar[i].day;
         
         for (let g = 0; g < numGroups; g++) {
-            if (i < 2) {
+            // Saturday and Sunday - MANDATORY for ALL groups (weekends)
+            if (currentDay === "Saturday" || currentDay === "Sunday") {
                 calendar[i].groups[g] = "Mandatory";
-            } else if (currentDay === "Saturday" || currentDay === "Sunday") {
+            }
+            // First 2 days are ALWAYS Mandatory (regardless of day)
+            else if (i < 2) {
+                calendar[i].groups[g] = "Mandatory";
+            }
+            // Friday - ALL GROUPS PRESENT (no weekoff)
+            else if (currentDay === "Friday") {
                 calendar[i].groups[g] = "present";
-            } else {
-                if (g % 2 === 0) {
+            }
+            // Monday to Thursday - Alternating weekoff pattern
+            else {
+                // Odd groups (1,3,5,...): Weekoff on Monday & Wednesday
+                if (g % 2 === 0) { // Group 1,3,5,7,...
                     if (currentDay === "Monday" || currentDay === "Wednesday") {
                         calendar[i].groups[g] = "weekoff";
                     } else {
                         calendar[i].groups[g] = "present";
                     }
-                } else {
+                }
+                // Even groups (2,4,6,...): Weekoff on Tuesday & Thursday
+                else { // Group 2,4,6,8,...
                     if (currentDay === "Tuesday" || currentDay === "Thursday") {
                         calendar[i].groups[g] = "weekoff";
                     } else {
@@ -128,6 +136,7 @@ export function autoAssignGroupPatterns(calendar, numGroups, totalCalendarDays) 
     }
     return calendar;
 }
+
 
 export function initializeSampleData() {
     const dates = [
@@ -147,8 +156,36 @@ export function initializeSampleData() {
     ];
     
     const taskAssignments = [
-        "task1", "task2", "", "", "", "", "task3", "", "task4", "", "", "", "", "task5", 
-        "", "task6", "", "", "", "", "", "task7", "task8", "", "", "", "", "task9", "task0", ""
+      "Task1",
+      "Task2",
+      "",
+      "",
+      "",
+      "",
+      "Task3",
+      "",
+      "Task4",
+      "",
+      "",
+      "",
+      "",
+      "Task5",
+      "",
+      "Task6",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "Task7",
+      "Task8",
+      "",
+      "",
+      "",
+      "",
+      "Task9",
+      "Task10",
+      "",
     ];
     
     // Create calendar first
@@ -169,16 +206,16 @@ export function initializeSampleData() {
     
     // NOW assign submissions ONLY on valid days
     const taskSubmissions = [
-        { task: "task1", startIdx: 0 },   // Nov 1 (Mandatory day)
-        { task: "task2", startIdx: 2 },   // Need to find valid day after Nov 2
-        { task: "task3", startIdx: 7 },   // Need to find valid day after Nov 7
-        { task: "task4", startIdx: 9 },   // Need to find valid day after Nov 9
-        { task: "task5", startIdx: 14 },  // Need to find valid day after Nov 14
-        { task: "task6", startIdx: 17 },  // Need to find valid day after Nov 17
-        { task: "task7", startIdx: 22 },  // Need to find valid day after Nov 22
-        { task: "task8", startIdx: 24 },  // Need to find valid day after Nov 24
-        { task: "task9", startIdx: 28 },  // Need to find valid day after Nov 28
-        { task: "task0", startIdx: 29 }   // Need to find valid day after Nov 29
+        { task: "Task1", startIdx: 1 },   // Nov 1 (Mandatory day)
+        { task: "Task2", startIdx: 2 },   // Need to find valid day after Nov 2
+        { task: "Task3", startIdx: 7 },   // Need to find valid day after Nov 7
+        { task: "Task4", startIdx: 9 },   // Need to find valid day after Nov 9
+        { task: "Task5", startIdx: 14 },  // Need to find valid day after Nov 14
+        { task: "Task6", startIdx: 17 },  // Need to find valid day after Nov 17
+        { task: "Task7", startIdx: 22 },  // Need to find valid day after Nov 22
+        { task: "Task8", startIdx: 24 },  // Need to find valid day after Nov 24
+        { task: "Task9", startIdx: 28 },  // Need to find valid day after Nov 28
+        { task: "Task10", startIdx: 29 }   // Need to find valid day after Nov 29
     ];
     
     // Assign submissions on valid days only
@@ -199,7 +236,7 @@ export function initializeSampleData() {
         {name: "Task7", start_col: 23, end_col: 24, start_date: "22-11-25", end_date: "23-11-25", duration: 1},
         {name: "Task8", start_col: 24, end_col: 29, start_date: "23-11-25", end_date: "28-11-25", duration: 5},
         {name: "Task9", start_col: 29, end_col: 30, start_date: "28-11-25", end_date: "29-11-25", duration: 1},
-        {name: "Task0", start_col: 30, end_col: 31, start_date: "29-11-25", end_date: "30-11-25", duration: 1}
+        {name: "Task10", start_col: 30, end_col: 31, start_date: "29-11-25", end_date: "30-11-25", duration: 1}
     ].map(t => ({ ...new Task(), ...t }));
     
     return { calendar, tasks };
