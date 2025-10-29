@@ -85,8 +85,7 @@ export default function Calendar({ calendar, numGroups, totalCalendarDays }) {
               ))}
             </tr>
           ))}
-          {/* Submission Row */}
-          // In the Calendar component, update the Submission row section:
+        
           {/* Submission Row */}
           <tr className="bg-indigo-50">
             <td className="border border-gray-300 px-3 py-2 font-semibold sticky left-0 bg-indigo-50 z-10">
