@@ -33,6 +33,41 @@ export function isWeekoff(groupStatus) {
     return groupStatus === "weekoff";
 }
 
+// Add this function after isWeekoff() and before daysBetween()
+
+export function isValidSubmissionDay(dayEntry, numGroups) {
+    // Check if it's one of the first 2 days (Mandatory)
+    const dayIndex = parseInt(dayEntry.date.split('-')[0]) - 1;
+    if (dayIndex < 2) {
+        return true;
+    }
+    
+    // Check if it's Friday, Saturday, or Sunday (all groups present)
+    const day = dayEntry.day;
+    if (day === 'Friday' || day === 'Saturday' || day === 'Sunday') {
+        return true;
+    }
+    
+    // Otherwise, check if ALL groups are present (no weekoffs)
+    for (let g = 0; g < numGroups; g++) {
+        if (isWeekoff(dayEntry.groups[g])) {
+            return false; // At least one group is off
+        }
+    }
+    
+    return true;
+}
+
+export function findNextValidSubmissionDay(calendar, startIndex, numGroups, totalCalendarDays) {
+    for (let i = startIndex; i < totalCalendarDays; i++) {
+        if (isValidSubmissionDay(calendar[i], numGroups)) {
+            return i;
+        }
+    }
+    return -1; // No valid day found
+}
+
+
 export function daysBetween(startDate, endDate) {
     const startParts = startDate.split('-');
     const endParts = endDate.split('-');
@@ -116,21 +151,43 @@ export function initializeSampleData() {
         "", "task6", "", "", "", "", "", "task7", "task8", "", "", "", "", "task9", "task0", ""
     ];
     
-    const submissions = [
-        "", "task1", "", "", "", "", "", "task2", "task3", "", "", "", "", "", 
-        "task4", "task5", "", "", "", "", "", "", "task6", "task7", "", "", "", "", "task8", "task9", "task0"
-    ];
-    
+    // Create calendar first
     const calendar = [];
     for (let i = 0; i < 30; i++) {
         const day = new DayEntry();
         day.date = dates[i];
         day.day = days[i];
         day.task = taskAssignments[i];
-        day.submission = submissions[i];
+        day.submission = ""; // Initialize empty
         day.groups = [];
         calendar.push(day);
     }
+    
+    // Apply group patterns
+    const numGroups = 5;
+    autoAssignGroupPatterns(calendar, numGroups, 30);
+    
+    // NOW assign submissions ONLY on valid days
+    const taskSubmissions = [
+        { task: "task1", startIdx: 0 },   // Nov 1 (Mandatory day)
+        { task: "task2", startIdx: 2 },   // Need to find valid day after Nov 2
+        { task: "task3", startIdx: 7 },   // Need to find valid day after Nov 7
+        { task: "task4", startIdx: 9 },   // Need to find valid day after Nov 9
+        { task: "task5", startIdx: 14 },  // Need to find valid day after Nov 14
+        { task: "task6", startIdx: 17 },  // Need to find valid day after Nov 17
+        { task: "task7", startIdx: 22 },  // Need to find valid day after Nov 22
+        { task: "task8", startIdx: 24 },  // Need to find valid day after Nov 24
+        { task: "task9", startIdx: 28 },  // Need to find valid day after Nov 28
+        { task: "task0", startIdx: 29 }   // Need to find valid day after Nov 29
+    ];
+    
+    // Assign submissions on valid days only
+    taskSubmissions.forEach(({ task, startIdx }) => {
+        const validDayIdx = findNextValidSubmissionDay(calendar, startIdx, numGroups, 30);
+        if (validDayIdx !== -1) {
+            calendar[validDayIdx].submission = task;
+        }
+    });
     
     const tasks = [
         {name: "Task1", start_col: 2, end_col: 3, start_date: "01-11-25", end_date: "02-11-25", duration: 2},

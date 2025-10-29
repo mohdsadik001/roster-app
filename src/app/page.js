@@ -14,8 +14,11 @@ import SettingsModal from '@/components/SettingsModal';
 import { 
     initializeSampleData, 
     autoAssignGroupPatterns, 
-    calculateWeekoffStats 
+    calculateWeekoffStats,
+    isValidSubmissionDay,
+    findNextValidSubmissionDay
 } from '@/lib/taskScheduler';
+
 import { Calendar as CalendarIcon, ListTodo, Users, Settings } from 'lucide-react';
 
 export default function Home() {
