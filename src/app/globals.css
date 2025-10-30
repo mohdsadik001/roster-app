@@ -1,30 +1,181 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@layer base {
+    html {
+        color-scheme: light;
+    }
+
+    html.dark {
+        color-scheme: dark;
+    }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@layer components {
+    .card {
+        @apply bg-white dark:bg-gray-800 rounded-lg shadow-md transition-colors duration-200;
+    }
+
+    .btn-primary {
+        @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition;
+    }
+
+    .btn-secondary {
+        @apply px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition;
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@layer utilities {
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
 }
 
-.no-scrollbar::-webkit-scrollbar{
-  visibility: hidden;
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    font-size: 0.875rem;
+    border-collapse: collapse;
+}
+
+table th {
+    padding: 0.5rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+}
+
+.dark table th {
+    background-color: #1f2937;
+    border-color: #374151;
+    color: #f3f4f6;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s;
+}
+
+.dark table tbody tr {
+    border-color: #374151;
+}
+
+table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.dark table tbody tr:hover {
+    background-color: #111827;
+}
+
+table td {
+    padding: 0.5rem 1rem;
+    color: #374151;
+}
+
+.dark table td {
+    color: #d1d5db;
+}
+
+/* Forms */
+input,
+select,
+textarea {
+    background-color: white;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.2s;
+    color: #111827;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #f3f4f6;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    ring: 2px solid #3b82f6;
+    border-color: #3b82f6;
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+    ring: 2px solid #60a5fa;
+    border-color: #60a5fa;
+}
+
+/* Selection */
+::selection {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.dark ::selection {
+    background-color: #60a5fa;
+    color: #111827;
+}
+
+/* Print */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Animations */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
 }
